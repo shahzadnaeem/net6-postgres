@@ -1,0 +1,23 @@
+# Ignore Visual Studio and Code files (trailing * required for exclusions below)
+.vs*/*
+
+# Keep these Visual Studio Code files
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# Ignore generated files
+[Bb]in/
+[Oo]bj/
+TestResults/
+logs/
+ImageFiles/
+Publish/
+
+# Test Coverage data
+MedicalLogApi.Tests/lcov.info
+
+# This happens sometimes in VS
+*.csproj.user
+.DS_Store
+/.idea
