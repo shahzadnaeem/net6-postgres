@@ -9,15 +9,3 @@
 # Ignore generated files
 [Bb]in/
 [Oo]bj/
-TestResults/
-logs/
-ImageFiles/
-Publish/
-
-# Test Coverage data
-MedicalLogApi.Tests/lcov.info
-
-# This happens sometimes in VS
-*.csproj.user
-.DS_Store
-/.idea
