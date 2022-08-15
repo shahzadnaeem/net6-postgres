@@ -114,7 +114,10 @@ namespace postgres
         public static void Op(string msg, bool preLine = false)
         {
             if (preLine)
+            {
                 Console.WriteLine();
+                Console.WriteLine();
+            }
 
             Console.WriteLine($"# {msg}");
         }
@@ -169,8 +172,7 @@ namespace postgres
                 Price = 100F
             };
 
-            ctx.Add<StockItem>(hammer);
-            ctx.Add<StockItem>(hat);
+            ctx.AddRange(hammer, hat);
 
             var buyer = new Customer
             {
@@ -202,8 +204,7 @@ namespace postgres
                 Quantity = 2
             };
 
-            ctx.Add<OrderItem>(orderItem1);
-            ctx.Add<OrderItem>(orderItem2);
+            ctx.AddRange(orderItem1, orderItem2);
 
             await ctx.SaveChangesAsync();
 
@@ -212,22 +213,24 @@ namespace postgres
 
         public async static Task Output(PostgresContext ctx)
         {
+            Op("Things...", true);
             var things = await ctx.Things.Include(t => t.Owners).ToListAsync();
 
             foreach (var thing in things)
             {
-                Op($"Thing #{thing.Id} = Name = {thing.Name}; Owner = {thing.Owners[0].OwnerName}");
+                Op($"Thing #{thing.Id}: Name = {thing.Name}; Owner = {thing.Owners[0].OwnerName}");
             }
 
+            Op("Orders...", true);
             var orders = await ctx.Orders.Include(o => o.OrderItems).Include(o => o.Buyer).ToListAsync();
 
             foreach (var order in orders)
             {
-                Op($"Order #{order.Id} = Buyer = {order.Buyer.Email}; Date = {order.OrderDate}");
+                Op($"Order #{order.Id}: Buyer = {order.Buyer.Email}; Date = {order.OrderDate}");
 
                 foreach (var item in order.OrderItems)
                 {
-                    Op($"  Item #{item.StockItemId} = Name = {item.StockItem.Name}; Qty = {item.Quantity}");
+                    Op($"  Item #{item.StockItemId}: Name = {item.StockItem.Name}; Qty = {item.Quantity}");
                 }
             }
 
