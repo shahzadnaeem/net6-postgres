@@ -181,7 +181,7 @@ namespace postgres
 
             var order = new Order
             {
-                OrderDate = DateTimeOffset.Now,
+                OrderDate = DateTimeOffset.UtcNow,
                 Buyer = buyer,
                 OrderItems = new List<OrderItem>()
             };
