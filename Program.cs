@@ -21,6 +21,7 @@ namespace postgres
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<StockItem> StockItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -234,10 +235,22 @@ namespace postgres
                 }
             }
 
+            Op("Another way...\n", true);
+
+            // NOTE: Only need to join collections - navigate through entities in select and magic happens :)
+
+            var deets =
+                from os in ctx.Orders
+                join its in ctx.OrderItems on os.Id equals its.OrderId
+                select new { OrderId = os.Id, Buyer = os.Buyer.Email, Date = os.OrderDate, Item = its.StockItem.Name, Quantity = its.Quantity, RowCost = its.Quantity * its.StockItem.Price };
+
+            foreach (var row in deets)
+            {
+                Op(row.ToString());
+            }
 
             Op("Bye!", true);
         }
-
     }
 
     class Program
